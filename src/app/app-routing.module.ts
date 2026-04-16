@@ -8,6 +8,7 @@ import { TodoListComponent } from './todo-list/todo-list.component';
 import { TodoTaskComponent } from './todo-task/todo-task.component';
 import { FashionComponent } from './fashion/fashion.component';
 import { FashionDetailComponent } from './fashion-detail/fashion-detail.component';
+import { ClothingShopPage } from './clothing-shop/clothing-shop.page';
 import { PrivacyPolicyComponent } from "./privacy-policy/privacy-policy.component";
 import { IntroComponent } from './intro/intro.component';
 import { RecipesComponent } from './recipes/recipes.component';
@@ -215,6 +216,10 @@ const routes: Routes = [
   {
     path: 'fashion-detail', 
     component: FashionDetailComponent
+  },
+  {
+  path: 'clothing-shop',
+  component: ClothingShopPage
   },
   {
     path: '**',

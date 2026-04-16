@@ -52,6 +52,7 @@ import { WidgetModule } from './widget/widget.module';
 import { CalcModule } from './calc/calc.module';
 import { WaterTrackerComponent } from './water-tracker/water-tracker.component';
 import { GazonComponent } from './gazon/gazon.component';
+import { ClothingShopPage } from './clothing-shop/clothing-shop.page';
 
 // Фабрика для загрузчика переводов
 export function HttpLoaderFactory(http: HttpClient) {
@@ -93,6 +94,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AddBlogModalComponent,
     WaterTrackerComponent,
     GazonComponent,
+    ClothingShopPage,
   ],
   imports: [
     BrowserModule,
