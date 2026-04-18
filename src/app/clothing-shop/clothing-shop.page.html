@@ -1,9 +1,12 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-buttons slot="start"><ion-menu-button></ion-menu-button></ion-buttons>
-    <ion-title>Магазин одежды</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{ (translate.currentLang === 'ru' ? 'Магазин одежды' : translate.currentLang === 'en' ? 'Clothing Store' : translate.currentLang === 'fr' ? 'Magasin de vêtements' : 'Negozio di abbigliamento') }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="showCart = !showCart">
+      <!-- Кнопка корзины: подсвечивается когда showCart = true -->
+      <ion-button (click)="showCart = !showCart" [color]="showCart ? 'warning' : 'light'">
         <ion-icon name="cart-outline" slot="icon-only"></ion-icon>
         <ion-badge color="danger" *ngIf="count > 0" class="cart-badge">{{count}}</ion-badge>
       </ion-button>
@@ -15,7 +18,7 @@
   <!-- Категории -->
   <ion-segment [(ngModel)]="selectedCategory" mode="md">
     <ion-segment-button *ngFor="let c of categories" [value]="c">
-      <ion-label>{{c}}</ion-label>
+      <ion-label>{{getCategoryName(c)}}</ion-label>
     </ion-segment-button>
   </ion-segment>
 
@@ -25,23 +28,23 @@
       <ion-col size="6" *ngFor="let p of filtered">
         <ion-card>
           <div class="tile" [style.backgroundColor]="p.color">
-            <span class="tile-text">{{p.name}}</span>
+            <span class="tile-text">{{getProductName(p)}}</span>
           </div>
           <ion-card-header>
-            <ion-card-title>{{p.name}}</ion-card-title>
-            <ion-card-subtitle>{{p.category}}</ion-card-subtitle>
+            <ion-card-title>{{getProductName(p)}}</ion-card-title>
+            <ion-card-subtitle>{{getCategoryName(p.category)}}</ion-card-subtitle>
           </ion-card-header>
           <ion-card-content>
             <h3 class="price">{{format(p.price)}} ₽</h3>
             <ion-item>
-              <ion-label>Размер</ion-label>
-              <ion-select #s placeholder="Выберите">
+              <ion-label>{{ translate.currentLang === 'ru' ? 'Размер' : translate.currentLang === 'en' ? 'Size' : translate.currentLang === 'fr' ? 'Taille' : 'Taglia' }}</ion-label>
+              <ion-select #s placeholder="{{ translate.currentLang === 'ru' ? 'Выберите' : translate.currentLang === 'en' ? 'Select' : translate.currentLang === 'fr' ? 'Choisir' : 'Seleziona' }}">
                 <ion-select-option *ngFor="let size of p.sizes" [value]="size">{{size}}</ion-select-option>
               </ion-select>
             </ion-item>
             <ion-button expand="block" (click)="add(p, s.value)" [disabled]="!s.value">
               <ion-icon name="cart-outline" slot="start"></ion-icon>
-              В корзину
+              {{ translate.currentLang === 'ru' ? 'В корзину' : translate.currentLang === 'en' ? 'Add to cart' : translate.currentLang === 'fr' ? 'Ajouter au panier' : 'Aggiungi al carrello' }}
             </ion-button>
           </ion-card-content>
         </ion-card>
@@ -53,8 +56,8 @@
   <div *ngIf="showCart" class="cart-container">
     <ion-card>
       <ion-card-header>
-        <ion-card-title>Корзина</ion-card-title>
-        <ion-card-subtitle>{{count}} товаров</ion-card-subtitle>
+        <ion-card-title>{{ translate.currentLang === 'ru' ? 'Корзина' : translate.currentLang === 'en' ? 'Cart' : translate.currentLang === 'fr' ? 'Panier' : 'Carrello' }}</ion-card-title>
+        <ion-card-subtitle>{{ count }} {{ translate.currentLang === 'ru' ? 'товаров' : translate.currentLang === 'en' ? (count === 1 ? 'item' : 'items') : translate.currentLang === 'fr' ? 'articles' : 'articoli' }}</ion-card-subtitle>
       </ion-card-header>
       <ion-card-content>
         <ion-list *ngIf="cartItems.length; else empty">
@@ -62,8 +65,8 @@
             <ion-item>
               <div class="small-tile" [style.backgroundColor]="item.product.color"></div>
               <ion-label>
-                <h2>{{item.product.name}}</h2>
-                <p>Размер: {{item.selectedSize}} | {{format(item.product.price)}} ₽</p>
+                <h2>{{getProductName(item.product)}}</h2>
+                <p>{{ translate.currentLang === 'ru' ? 'Размер' : translate.currentLang === 'en' ? 'Size' : translate.currentLang === 'fr' ? 'Taille' : 'Taglia' }}: {{item.selectedSize}} | {{format(item.product.price)}} ₽</p>
               </ion-label>
               <div class="qty">
                 <ion-button fill="clear" size="small" (click)="update(item, -1)">-</ion-button>
@@ -73,20 +76,28 @@
               <ion-note slot="end">{{format(item.product.price * item.quantity)}} ₽</ion-note>
             </ion-item>
             <ion-item-options>
-              <ion-item-option color="danger" (click)="remove(item)">🗑 Удалить</ion-item-option>
+              <ion-item-option color="danger" (click)="remove(item)">
+                {{ translate.currentLang === 'ru' ? 'Удалить' : translate.currentLang === 'en' ? 'Delete' : translate.currentLang === 'fr' ? 'Supprimer' : 'Elimina' }}
+              </ion-item-option>
             </ion-item-options>
           </ion-item-sliding>
         </ion-list>
         <ng-template #empty>
-          <ion-text color="medium" class="empty-cart"><h3>Корзина пуста</h3></ion-text>
+          <ion-text color="medium" class="empty-cart">
+            <h3>{{ translate.currentLang === 'ru' ? 'Корзина пуста' : translate.currentLang === 'en' ? 'Cart is empty' : translate.currentLang === 'fr' ? 'Panier vide' : 'Carrello vuoto' }}</h3>
+          </ion-text>
         </ng-template>
         <div *ngIf="cartItems.length" class="cart-footer">
           <ion-item lines="none">
-            <ion-label><h3>Итого:</h3></ion-label>
+            <ion-label><h3>{{ translate.currentLang === 'ru' ? 'Итого:' : translate.currentLang === 'en' ? 'Total:' : translate.currentLang === 'fr' ? 'Total:' : 'Totale:' }}</h3></ion-label>
             <h2 slot="end">{{format(total)}} ₽</h2>
           </ion-item>
-          <ion-button expand="block" (click)="checkout()">Оформить заказ</ion-button>
-          <ion-button expand="block" fill="clear" (click)="clear()">Очистить корзину</ion-button>
+          <ion-button expand="block" (click)="checkout()">
+            {{ translate.currentLang === 'ru' ? 'Оформить заказ' : translate.currentLang === 'en' ? 'Checkout' : translate.currentLang === 'fr' ? 'Commander' : 'Acquista' }}
+          </ion-button>
+          <ion-button expand="block" fill="clear" (click)="clear()">
+            {{ translate.currentLang === 'ru' ? 'Очистить корзину' : translate.currentLang === 'en' ? 'Clear cart' : translate.currentLang === 'fr' ? 'Vider le panier' : 'Svuota carrello' }}
+          </ion-button>
         </div>
       </ion-card-content>
     </ion-card>
