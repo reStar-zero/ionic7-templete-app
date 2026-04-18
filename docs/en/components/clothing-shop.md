@@ -18,7 +18,7 @@ localStorage - used to persist the cart between sessions
 TranslateService - used for multi-language support (Russian, English, French, Italian)
 [style.backgroundColor] - dynamically changes the tile color for each product
 
-## What needs to be completed:
+## TODO:
 1. Add the ability to edit the quantity of items in the cart via direct input
 2. Implement product search by name
 3. Add saving of the selected language to localStorage
